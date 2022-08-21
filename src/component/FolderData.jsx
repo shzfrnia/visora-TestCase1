@@ -401,7 +401,7 @@ export default class FolderData extends Component
           <a
             href="#"
             className={"add-doc-btn" + (!isEdit ? " none" : "")}
-            onClick={(ev) => TasksDesk.this.initDocuments(ev)}
+            onClick={(ev) => TasksDesk.this.initDocuments(ev, documents)}
           >{lang[langData.add] + " " + lang[langData.document] + lang[langData.s]}</a>
 
           {

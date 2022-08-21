@@ -8,6 +8,12 @@ let delay = 0;
 let delDocIndex = -1;
 const pathname = document.location.pathname;
 
+const getRandomIntInclusive = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; 
+}
+
 export default class TasksDesk extends Component
 {
   constructor(props)
@@ -271,7 +277,6 @@ export default class TasksDesk extends Component
       backBtn.addEventListener("click", (ev) =>
       {
         ev.preventDefault();
-
         this.closeFolderView();
       })
 
@@ -775,11 +780,19 @@ export default class TasksDesk extends Component
     this.changeViewMode(view.folderView);
   }
 
-  initDocuments = async (ev) =>
+  initDocuments = async (ev, documents) =>
   {
     ev.preventDefault();
-
-
+    const id = documents.length
+    const doc = {
+      id,
+      name: `Doc ${id + 1}`,
+      registers: getRandomIntInclusive(0, statuses.length),
+      status: "Загружен"
+    }
+    this.state.folderViewObject.documents.push(doc);
+    documents.push(doc);
+    this.forceUpdate();
   }
 
   prepareToDel = async (ev, index) =>
@@ -1130,7 +1143,7 @@ export default class TasksDesk extends Component
         </div>
 
         <div
-          noHist={1}
+          // noHist={1}
           className={"folders-cont" + (viewMode != view.foldersView || !folderTypesArr.length ? " none" : "")}
         >
           <br />
