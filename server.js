@@ -30,7 +30,7 @@ app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, 'index.html'))
 });
 
-const server = app.listen(3062, 'localhost', function () {
+const server = app.listen(3062, function () {
   const host = server.address().address;
   const port = server.address().port;
 
