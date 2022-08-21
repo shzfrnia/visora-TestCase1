@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {langData, lilArr} from '../constants'
+import {langData, lilArr, statuses} from '../constants'
 import TasksDesk from './MainContainer'
 
 let isFirstStepDone = false;
@@ -48,7 +48,6 @@ export default class RegistersData extends Component
   render()
   {
     const {folderViewObject, selDocs, registers, createRegLoader, regParams, lang} = TasksDesk.this.state;
-
     return (
       <>
 
@@ -97,9 +96,9 @@ export default class RegistersData extends Component
                           </div>
                         </td>
                         <td>
-                          {/* {doc.registers || ""} */}
+                          {doc.registers}
                         </td>
-                        <td></td>
+                        <td>{doc.status}</td>
                       </tr>
                     )
                   })
@@ -142,7 +141,7 @@ export default class RegistersData extends Component
 
         </div>
 
-        <div className={"step" + (!registers.length ? " none" : "")}>
+        <div className={"step" + (!folderViewObject.documents.length ? " none" : "")}>
 
           <div className={"number" + (isSecStepDone ? " done" : "")}>
             {isSecStepDone ? this.renderDoneSvg() : 2}
@@ -154,8 +153,14 @@ export default class RegistersData extends Component
 
             <div className="registers-cont">
               {
-                registers.map((reg, index) =>
+                folderViewObject.documents.map((doc, index) =>
                 {
+                  const reg = {
+                    name: lang[langData.register] + " " + lang[langData.ofTransmission] + " " + lang[langData.numSymbol] + 0,
+                    statuses: statuses.map((s, i) => {return {...s, done: i < doc.registers}}),
+                    url: "url",
+                    docUrl: "docurl"
+                  }
                   return (
                     <div
                       key={index}
@@ -204,7 +209,7 @@ export default class RegistersData extends Component
                       </div>
 
                       <a
-                        href={reg.docUrl}
+                        href="#"
                         className="handle-reg"
                       >
                         {lang[langData.hanlde] + " " + lang[langData.register].toLowerCase()}
