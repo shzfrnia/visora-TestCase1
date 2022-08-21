@@ -517,16 +517,7 @@ export default class TasksDesk extends Component
 
     if (!name) return;
 
-    let docs = [];
-
-    folderCopy.documents.forEach(copyDoc =>
-    {
-      const isSameDoc = folderViewObject.documents.some(doc => {return doc.id == copyDoc.id});
-
-      if ((!isSameDoc && copyDoc.del) || (isSameDoc && !copyDoc.del)) return;
-
-      docs.push({id: copyDoc.id, del: copyDoc.del ? 1 : undefined});
-    })
+    let docs = folderViewObject.documents;
 
     if (
       name != folderViewObject.name
@@ -558,6 +549,7 @@ export default class TasksDesk extends Component
       };
 
       data = await this.getData("/ParseBills", data);
+      this.state.folderTypesArr = data.bills ? this.prepareFoldersData(data.bills) : [];
 
       if (!data.success)
       {
@@ -570,7 +562,6 @@ export default class TasksDesk extends Component
       {
         folderCopy.id = data.id;
       }
-
       if (folderTypesArr.length) 
       {
         folderTypesArr[0].folders[folderTypesArr[0].folders.length - 1].id = folderCopy.id;
@@ -712,14 +703,13 @@ export default class TasksDesk extends Component
 
       this.pushHistState("?PID=" + folder.id + "&vr=1");
 
-      if (folder.documents)
+      if (folder.docs)
       {
-        folderViewObject.documents = this.getArrCopy(folder.documents);
-        folderViewObject.selWayIDs = JSON.parse(JSON.stringify(folder.selWayIDs));
-        folderViewObject.customer = JSON.parse(JSON.stringify(folder.customer));
+        folderViewObject.documents = this.getArrCopy(folder.docs);
+        // folderViewObject.selWayIDs = JSON.parse(JSON.stringify(folder.selWayIDs));
+        // folderViewObject.customer = JSON.parse(JSON.stringify(folder.customer));
 
         this.changeViewMode(view.folderView);
-
         return;
       }
 
@@ -776,6 +766,7 @@ export default class TasksDesk extends Component
     }
 
     this.state.isEdit = true;
+    this.state.folderViewObject.id = this.state.folderTypesArr.length + 1;
 
     this.changeViewMode(view.folderView);
   }
