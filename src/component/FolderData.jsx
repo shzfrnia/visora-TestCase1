@@ -273,8 +273,6 @@ export default class FolderData extends Component
   {
     if (!elem) return;
 
-    const $elem = $(elem);
-
     const location = "/Servs/InfoPage.aspx/";
 
     const link = location + "UserCbeSearch";
@@ -285,13 +283,13 @@ export default class FolderData extends Component
       elem.value = TasksDesk.this.state.folderCopy.customer.name;
     }
 
-    $elem.attr("oncount", countLink);
-    $elem.attr("exprms", "'third'");
-    $elem.attr("onsearch", link);
+    elem.setAttribute("oncount", countLink);
+    elem.setAttribute("exprms", "'third'");
+    elem.setAttribute("onsearch", link);
 
-    $.event.trigger("cbeInit");
+    elem.dispatchEvent(new Event("cbeInit"));
 
-    $elem.on("selected", (ev) =>
+    elem.addEventListener("selected", (ev) =>
     {
       const id = ev.itemID || "";
       const name = elem.value;
@@ -332,9 +330,7 @@ export default class FolderData extends Component
       <>
 
         <div className={"edit-header" + (isEdit ? " none" : "")}>
-
           {folderViewObject.name}
-
           <a
             href="#"
             className="edit-btn"
