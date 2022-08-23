@@ -366,7 +366,11 @@ export default class FolderData extends Component
             />
 
           </div>
-
+          <a
+            href="#"
+            className={"add-doc-btn" + (!isEdit ? " none" : "")}
+            onClick={(ev) => TasksDesk.this.initDocuments(ev, documents)}
+          >{lang[langData.add] + " " + lang[langData.document] + lang[langData.s]}</a>
           <div className={"docs" + (!documents.length ? " none" : "")}>
             {
               documents.map((doc, index) =>
@@ -397,13 +401,6 @@ export default class FolderData extends Component
               })
             }
           </div>
-
-          <a
-            href="#"
-            className={"add-doc-btn" + (!isEdit ? " none" : "")}
-            onClick={(ev) => TasksDesk.this.initDocuments(ev, documents)}
-          >{lang[langData.add] + " " + lang[langData.document] + lang[langData.s]}</a>
-
           {
             isEdit || folderCopy.customer.name ?
               <div className="group">

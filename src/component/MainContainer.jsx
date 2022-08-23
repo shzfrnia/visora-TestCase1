@@ -8,11 +8,6 @@ let delay = 0;
 let delDocIndex = -1;
 const pathname = document.location.pathname;
 
-const getRandomIntInclusive = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min; 
-}
 
 export default class TasksDesk extends Component
 {
@@ -529,7 +524,7 @@ export default class TasksDesk extends Component
       !folderCopy.selWayIDs.some(cWay => {return folderViewObject.selWayIDs.some(way => {return way == cWay})})
       ||
       folderCopy.customer.id != folderViewObject.customer.id
-    ) 
+    )
     {
       let delivs = "|";
 
@@ -757,6 +752,12 @@ export default class TasksDesk extends Component
     })
   }
 
+  getRandomIntInclusive = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; 
+  }
+
   addFolder = (ev) =>
   {
     if (ev)
@@ -774,12 +775,23 @@ export default class TasksDesk extends Component
   initDocuments = async (ev, documents) =>
   {
     ev.preventDefault();
-    const id = documents.length
+    const regIds = [];
+    const id = documents.length;
+    const regsCount = this.getRandomIntInclusive(1, id);
+
+    for(let i = 0; i < regsCount; i++) {
+      if (this.getRandomIntInclusive(0, 1)) {
+        regIds.push(this.getRandomIntInclusive(0, i));
+      }
+    }
+
+    if (!regIds.length) {
+      regIds.push(0);
+    }
     const doc = {
       id,
       name: `Doc ${id + 1}`,
-      registers: getRandomIntInclusive(0, statuses.length),
-      status: "Загружен"
+      registers: [...new Set(regIds)],
     }
     this.state.folderViewObject.documents.push(doc);
     documents.push(doc);
@@ -1150,18 +1162,17 @@ export default class TasksDesk extends Component
                   <div className="type-name">{typeObj.name}</div>
                   <div className="folders">
                     {
-                      typeObj.folders.map(folder =>
+                      typeObj.folders.map((folder, index) =>
                       {
                         return (
                           <a
-                            key={folder.id}
+                            key={index}
                             href="#"
                             ref={this.getTitle}
                             className="folder-btn"
                             onClick={(ev) => {this.openFolder(folder, ev)}}
                           >
                             {this.renderSvg(folder.status)}
-
                             <div className="fold-info">
                               <div className="name">{folder.name}</div>
                               {

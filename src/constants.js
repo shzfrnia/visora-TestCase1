@@ -2,7 +2,7 @@ export const view = {
   none: 0,
   loader: 1,
   foldersView: 2,
-  folderView: 3
+  folderView: 3,
 };
 
 export const lang = [
@@ -58,7 +58,6 @@ export const lang = [
   "сбор", // 49
   "передача", // 50
   "не найдены", // 51
-
 ];
 
 export const langData = {
@@ -114,84 +113,110 @@ export const langData = {
   collection: 49, // "сбор"
   transfer: 50, // "передача"
   notFound: 51, // "не найдены"
-  
-}
+};
 
 export const currStats = ["", " await", " sent", " recieved", " done"];
 
 export const regStats = [
   {
     id: 1,
-    name: lang[langData.created]
+    name: lang[langData.created],
   },
   {
     id: 2,
-    name: lang[langData.inProgress] + " " + lang[langData.collection] + " " + lang[langData.document] + lang[langData.ov]
+    name:
+      lang[langData.inProgress] +
+      " " +
+      lang[langData.collection] +
+      " " +
+      lang[langData.document] +
+      lang[langData.ov],
   },
   {
     id: 3,
-    name: lang[langData.document][0].toUpperCase() + lang[langData.document].substr(1) + lang[langData.s] + " " + lang[langData.collected]
+    name:
+      lang[langData.document][0].toUpperCase() +
+      lang[langData.document].substr(1) +
+      lang[langData.s] +
+      " " +
+      lang[langData.collected],
   },
   {
     id: 4,
-    name: lang[langData.transInProgress]
+    name: lang[langData.transInProgress],
   },
   {
     id: 5,
-    name: lang[langData.transCompleted]
-  }
+    name: lang[langData.transCompleted],
+  },
 ];
 
 export const statuses = [
   {
     name: lang[langData.training],
-    id: 1
+    id: 1,
   },
   {
     name: lang[langData.inProgress] + " " + lang[langData.collection],
-    id: 2
+    id: 2,
   },
   {
-    name: lang[langData.document][0].toUpperCase() + lang[langData.document].substr(1) + lang[langData.s] + " " + lang[langData.collected],
-    id: 3
+    name:
+      lang[langData.document][0].toUpperCase() +
+      lang[langData.document].substr(1) +
+      lang[langData.s] +
+      " " +
+      lang[langData.collected],
+    id: 3,
   },
   {
     name: lang[langData.inProgress] + " " + lang[langData.transfer],
-    id: 4
+    id: 4,
   },
   {
     name: lang[langData.done],
-    id: 5
+    id: 5,
   },
 ];
 
 export const ways = [
   {
     id: 1,
-    name: lang[langData.courier]
+    name: lang[langData.courier],
   },
   {
     id: 2,
-    name: lang[langData.eMail]
+    name: lang[langData.eMail],
   },
   {
     id: 3,
-    name: lang[langData.postOfRussia]
+    name: lang[langData.postOfRussia],
   },
   {
     id: 4,
-    name: lang[langData.diadoc]
+    name: lang[langData.diadoc],
   },
   {
     id: 5,
-    name: lang[langData.sdek]
+    name: lang[langData.sdek],
   },
   {
     id: 6,
-    name: lang[langData.dhl]
-  }
+    name: lang[langData.dhl],
+  },
 ];
 
-export const lilArr = ["", ""]
+export const lilArr = ["", ""];
 
 export const threeArr = ["", "", ""];
+
+export const registers = [
+  {
+    name: `${lang[langData.register]} ${lang[langData.ofTransmission]} ${lang[langData.numSymbol]}`,
+    statuses: statuses.map((el) => {
+      return { ...el };
+    }),
+    url: "#",
+    docUrl: "#",
+  },
+];

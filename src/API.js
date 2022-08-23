@@ -18,6 +18,9 @@ class MockResponse {
   constructor(success, data) {
     this.success = success;
     this.data = data;
+    for (const [key, value] of Object.entries(data)) {
+      this[key] = value
+    }
   }
 }
 
@@ -32,7 +35,7 @@ class MockApi {
     if (bill) {
       this.bills.push(bill);
     }
-    return new MockResponse(true, null);
+    return new MockResponse(true, {id: bill?.id});
   }
 
   async post(url, data, config) {
@@ -45,7 +48,7 @@ class MockApi {
       default:
         throw ([url, data, config], "Method is not mocked");
     }
-    return { data: { d: { ...{ bills: this.bills }, ...result } } };
+    return { data: { d: { ...{ bills: this.bills, ...result } } } };
   }
 }
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {langData, lilArr, statuses} from '../constants'
+import {langData, lilArr, registers, statuses} from '../constants'
 import TasksDesk from './MainContainer'
 
 let isFirstStepDone = false;
@@ -47,12 +47,22 @@ export default class RegistersData extends Component
 
   render()
   {
-    const {folderViewObject, selDocs, registers, createRegLoader, regParams, lang} = TasksDesk.this.state;
+    const {folderViewObject, selDocs, createRegLoader, regParams, lang} = TasksDesk.this.state;
+    let documentRegisters = [];
+    folderViewObject.documents.forEach(d => d.registers.forEach(r => documentRegisters.push(r)));
+    documentRegisters = [...new Set(documentRegisters)];
+    const folderRegisters = documentRegisters
+      .sort()
+      .map(el => ({
+        ...registers[0],
+        name: registers[0].name + el,
+        id: el,
+        status: TasksDesk.this.getRandomIntInclusive(0, statuses.length)
+      }))
     return (
       <>
 
         <div className="step">
-
           <div className={"number" + (isFirstStepDone ? " done" : "")}>
             {isFirstStepDone ? this.renderDoneSvg() : lang[langData.oneNum]}
           </div>
@@ -75,6 +85,16 @@ export default class RegistersData extends Component
                 {
                   folderViewObject.documents.map((doc, index) =>
                   {
+                    const regs = doc.registers.map(r => folderRegisters.filter(el => el.id == r)[0]);
+                    let maxStatusReg = regs[0]
+                    regs.forEach(r => {
+                      if (r.status > maxStatusReg.status) {
+                        maxStatusReg = r;
+                      }
+                    })
+                    const status = maxStatusReg.statuses[
+                      maxStatusReg.status > 0 ? maxStatusReg.status - 1 : maxStatusReg.status
+                    ].name;
                     return (
                       <tr
                         key={index}
@@ -96,9 +116,9 @@ export default class RegistersData extends Component
                           </div>
                         </td>
                         <td>
-                          {doc.registers}
+                          {doc.registers.join(', ')}
                         </td>
-                        <td>{doc.status}</td>
+                        <td>{status}</td>
                       </tr>
                     )
                   })
@@ -153,14 +173,8 @@ export default class RegistersData extends Component
 
             <div className="registers-cont">
               {
-                folderViewObject.documents.map((doc, index) =>
+                folderRegisters.map((reg, index) =>
                 {
-                  const reg = {
-                    name: lang[langData.register] + " " + lang[langData.ofTransmission] + " " + lang[langData.numSymbol] + 0,
-                    statuses: statuses.map((s, i) => {return {...s, done: i < doc.registers}}),
-                    url: "url",
-                    docUrl: "docurl"
-                  }
                   return (
                     <div
                       key={index}
@@ -181,8 +195,9 @@ export default class RegistersData extends Component
 
                       <div className="stat-cont">
                         {
-                          reg.statuses.map(stat =>
+                          reg.statuses.map((stat,index) =>
                           {
+                            stat.done = reg.status > index;
                             return (
                               <div
                                 key={stat.id}
