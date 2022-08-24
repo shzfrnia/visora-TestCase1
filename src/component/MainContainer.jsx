@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {view, lang, langData, statuses, currStats, ways, regStats} from '../constants'
+import {view, lang, langData, statuses, currStats, ways, regStats, registers} from '../constants'
 import API from '../API'
 import FolderData from './FolderData'
 import RegistersData from './RegistersData';
@@ -777,11 +777,11 @@ export default class TasksDesk extends Component
     ev.preventDefault();
     const regIds = [];
     const id = documents.length;
-    const regsCount = this.getRandomIntInclusive(1, id);
+    const regsCount = this.getRandomIntInclusive(1, registers.length);
 
     for(let i = 0; i < regsCount; i++) {
       if (this.getRandomIntInclusive(0, 1)) {
-        regIds.push(this.getRandomIntInclusive(0, i));
+        regIds.push(this.getRandomIntInclusive(0, registers.length - 1));
       }
     }
 
@@ -791,7 +791,7 @@ export default class TasksDesk extends Component
     const doc = {
       id,
       name: `Doc ${id + 1}`,
-      registers: [...new Set(regIds)],
+      registers: [...new Set(regIds)].sort().map(r => ({...registers[r]})),
     }
     this.state.folderViewObject.documents.push(doc);
     documents.push(doc);

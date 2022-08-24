@@ -48,17 +48,16 @@ export default class RegistersData extends Component
   render()
   {
     const {folderViewObject, selDocs, createRegLoader, regParams, lang} = TasksDesk.this.state;
-    let documentRegisters = [];
-    folderViewObject.documents.forEach(d => d.registers.forEach(r => documentRegisters.push(r)));
-    documentRegisters = [...new Set(documentRegisters)];
-    const folderRegisters = documentRegisters
+    let documentRegistersIds = [];
+    folderViewObject.documents.forEach(d => d.registers.forEach(r => documentRegistersIds.push(r.id)));
+    documentRegistersIds = [...new Set(documentRegistersIds)];
+    const folderRegisters = documentRegistersIds
       .sort()
       .map(el => ({
-        ...registers[0],
-        name: registers[0].name + el,
-        id: el,
-        status: TasksDesk.this.getRandomIntInclusive(0, statuses.length)
+        ...registers.filter(r => r.id == el)[0],
+        //status: TasksDesk.this.getRandomIntInclusive(0, statuses.length)
       }))
+      window.test = folderRegisters;
     return (
       <>
 
@@ -85,15 +84,15 @@ export default class RegistersData extends Component
                 {
                   folderViewObject.documents.map((doc, index) =>
                   {
-                    const regs = doc.registers.map(r => folderRegisters.filter(el => el.id == r)[0]);
+                    const regs = doc.registers;
                     let maxStatusReg = regs[0]
                     regs.forEach(r => {
                       if (r.status > maxStatusReg.status) {
                         maxStatusReg = r;
                       }
-                    })
+                    });
                     const status = maxStatusReg.statuses[
-                      maxStatusReg.status > 0 ? maxStatusReg.status - 1 : maxStatusReg.status
+                      maxStatusReg.status > 0 ? maxStatusReg.status : maxStatusReg.status
                     ].name;
                     return (
                       <tr
@@ -116,7 +115,7 @@ export default class RegistersData extends Component
                           </div>
                         </td>
                         <td>
-                          {doc.registers.join(', ')}
+                          {doc.registers.map(r => r.id).join(', ')}
                         </td>
                         <td>{status}</td>
                       </tr>
@@ -195,17 +194,18 @@ export default class RegistersData extends Component
 
                       <div className="stat-cont">
                         {
-                          reg.statuses.map((stat,index) =>
+                          reg.statuses.map((stat, index) =>
                           {
-                            stat.done = reg.status > index;
+                            const done = reg.status > index;
+                            const on = reg.status == index;
                             return (
                               <div
                                 key={stat.id}
-                                className={"status" + (stat.on ? " on" : stat.done ? " done" : "")}
+                                className={"status" + (on ? " on" : done ? " done" : "")}
                               >
                                 <div className="svg-cont">
                                   {
-                                    stat.on || stat.done ?
+                                    on || done ?
                                       <svg viewBox="0 0 11 9">
                                         <path d="M1 4L4 7L10 1" strokeWidth="2" />
                                       </svg>

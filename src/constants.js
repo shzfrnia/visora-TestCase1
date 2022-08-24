@@ -212,11 +212,43 @@ export const threeArr = ["", "", ""];
 
 export const registers = [
   {
-    name: `${lang[langData.register]} ${lang[langData.ofTransmission]} ${lang[langData.numSymbol]}`,
-    statuses: statuses.map((el) => {
-      return { ...el };
-    }),
+    id: 1,
+    name: `${lang[langData.register]} ${lang[langData.ofTransmission]} ${lang[langData.numSymbol]}1`,
+    statuses: statuses.map((el) => ({ ...el })),
     url: "#",
     docUrl: "#",
+    status: 0,
+  },
+  {
+    id: 2,
+    name: `${lang[langData.register]} ${lang[langData.ofTransmission]} ${lang[langData.numSymbol]}2`,
+    statuses: statuses.map((el) => ({ ...el })),
+    url: "#",
+    docUrl: "#",
+    status: 1,
+  },
+  {
+    id: 3,
+    name: `${lang[langData.register]} ${lang[langData.ofTransmission]} ${lang[langData.numSymbol]}3`,
+    statuses: statuses.map((el) => ({ ...el })),
+    url: "#",
+    docUrl: "#",
+    status: 2,
+  },
+  {
+    id: 4,
+    name: `${lang[langData.register]} ${lang[langData.ofTransmission]} ${lang[langData.numSymbol]}4`,
+    statuses: statuses.map((el) => ({ ...el })),
+    url: "#",
+    docUrl: "#",
+    status: 3,
+  },
+  {
+    id: 5,
+    name: `${lang[langData.register]} ${lang[langData.ofTransmission]} ${lang[langData.numSymbol]}5`,
+    statuses: statuses.map((el) => ({ ...el })),
+    url: "#",
+    docUrl: "#",
+    status: 4,
   },
 ];

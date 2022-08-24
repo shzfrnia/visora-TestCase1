@@ -943,3 +943,7 @@
     display: none !important;
   }
 }
+
+.main-tb-filter-ch2 a:not(:first-child), .clients-views a:not(:first-child) {
+  margin-left: 5px;
+}
